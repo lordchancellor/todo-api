@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "repository": "https://github.com/lordchancellor/todo-api.git",
   "scripts": {
     "start": "node server/server.js",
     "test": "mocha server/**/*.test.js",
@@ -16,6 +17,7 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "lodash": "^4.17.4",
     "mongodb": "^2.2.5",
     "mongoose": "^4.5.9"
   },
