@@ -132,23 +132,6 @@ app.post('/users/login', (req, res) => {
 								 .then((token) => res.header('x-auth', token).send(user));
 		})
 		.catch((e) => res.status(400).send(e));
-
-	// const email = body.email;
-
-	// User.findOne({ email })
-	// 		.then((user) => {
-	// 			bcrypt.compare(body.password, user.password, (err, match) => {
-	// 				if (match) {
-	// 					return user.generateAuthToken();
-	// 				} else {
-	// 					res.status(404).send();
-	// 				}
-	// 			});
-	// 		})
-	// 		.then((token) => {
-	// 			res.header('x-auth', token).send(user);
-	// 		})
-	// 		.catch((e) => res.status(400).send(e));
 });
 
 app.listen(PORT, () => console.log(`Started on port ${PORT}.....`));
