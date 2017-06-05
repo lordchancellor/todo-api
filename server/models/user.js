@@ -43,12 +43,22 @@ UserSchema.methods.toJSON = function toJSON() {
 UserSchema.methods.generateAuthToken = function generateAuthToken() {
 	const user = this;
 	const access = 'auth';
-	const token = jwt.sign({ _id: this._id.toHexString(), access}, 'jorgesecretsauce').toString();
+	const token = jwt.sign({ _id: this._id.toHexString(), access}, 'secretsauce').toString();
 
 	user.tokens.push({ access, token });
 
 	return user.save()
 						 .then(() => token);
+};
+
+UserSchema.methods.removeToken = function removeToken(token) {
+	var user = this;
+
+	return user.update({
+		$pull: {
+			tokens: { token	}
+		}
+	});
 };
 
 UserSchema.statics.findByToken = function findByToken(token) {
@@ -69,7 +79,7 @@ UserSchema.statics.findByToken = function findByToken(token) {
 };
 
 UserSchema.statics.findByCredentials = function findByCredentials(email, password) {
-	let User = this;
+	const User = this;
 
 	return User.findOne({ email })
 		.then((user) => {
