@@ -122,6 +122,34 @@ app.get('/users/me', authenticate, (req, res) => {
 	res.send(req.user);
 });
 
+// User login route
+app.post('/users/login', (req, res) => {
+	const body = _.pick(req.body, ['email', 'password']);
+
+	User.findByCredentials(body.email, body.password)
+		.then((user) => { 
+			return user.generateAuthToken()
+								 .then((token) => res.header('x-auth', token).send(user));
+		})
+		.catch((e) => res.status(400).send(e));
+
+	// const email = body.email;
+
+	// User.findOne({ email })
+	// 		.then((user) => {
+	// 			bcrypt.compare(body.password, user.password, (err, match) => {
+	// 				if (match) {
+	// 					return user.generateAuthToken();
+	// 				} else {
+	// 					res.status(404).send();
+	// 				}
+	// 			});
+	// 		})
+	// 		.then((token) => {
+	// 			res.header('x-auth', token).send(user);
+	// 		})
+	// 		.catch((e) => res.status(400).send(e));
+});
 
 app.listen(PORT, () => console.log(`Started on port ${PORT}.....`));
 

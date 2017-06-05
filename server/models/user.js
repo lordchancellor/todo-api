@@ -56,7 +56,7 @@ UserSchema.statics.findByToken = function findByToken(token) {
 	let decoded;
 
 	try {
-		decoded = jwt.verify(token, 'jorgesecretsauce');
+		decoded = jwt.verify(token, 'secretsauce');
 	} catch (e) {
 		return Promise.reject();
 	}
@@ -66,6 +66,27 @@ UserSchema.statics.findByToken = function findByToken(token) {
 		'tokens.token': token,
 		'tokens.access': 'auth'
 	});
+};
+
+UserSchema.statics.findByCredentials = function findByCredentials(email, password) {
+	let User = this;
+
+	return User.findOne({ email })
+		.then((user) => {
+			if (!user) {
+				return Promise.reject();
+			}
+
+			return new Promise((resolve, reject) => {
+				bcrypt.compare(password, user.password, (err, match) => {
+					if (match) {
+						resolve(user);
+					} else {
+						reject();
+					}
+				});
+			});
+		});
 };
 
 UserSchema.pre('save', function(next) {
